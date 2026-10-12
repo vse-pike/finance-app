@@ -24,8 +24,8 @@ services:
       AUTH_USERNAME: ${AUTH_USERNAME}
       AUTH_PASSWORD: ${AUTH_PASSWORD}
       SESSION_SECRET: ${SESSION_SECRET}
-      # Доступ через Cloudflare (HTTPS) — cookie помечается Secure
-      COOKIE_SECURE: 'true'
+      # За Cloudflare (HTTPS) должен быть true; для локального http — false в .env
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
     depends_on:
       postgres:
         condition: service_healthy
