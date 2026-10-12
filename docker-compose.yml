@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: finance
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-finance}
+      POSTGRES_DB: finance
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U finance -d finance']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # Наружу порты не публикуем: БД доступна только внутри docker-сети.
+    # Для локальной разработки раскомментируй:
+    # ports:
+    #   - '127.0.0.1:5432:5432'
+
+  app:
+    build: .
+    environment:
+      DATABASE_URL: postgres://finance:${POSTGRES_PASSWORD:-finance}@postgres:5432/finance
+      AUTH_USERNAME: ${AUTH_USERNAME}
+      AUTH_PASSWORD: ${AUTH_PASSWORD}
+      SESSION_SECRET: ${SESSION_SECRET}
+      # Доступ через Cloudflare (HTTPS) — cookie помечается Secure
+      COOKIE_SECURE: 'true'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Прямой доступ полезен локально; в проде ходим через cloudflared.
+    ports:
+      - '127.0.0.1:3000:3000'
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    depends_on:
+      - app
+    profiles: ['tunnel'] # стартует только с --profile tunnel
+
+volumes:
+  pgdata:
