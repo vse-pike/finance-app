@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import type { AssetApi, RecurringRuleApi } from '@/app/_lib/api';
 import { apiErrorMessage, apiFetch } from '@/app/_lib/api';
@@ -29,7 +28,6 @@ interface RulesPanelProps {
 }
 
 export function RulesPanel({ asset, rules, onChanged }: RulesPanelProps) {
-  const router = useRouter();
   const invested = asset.valuation === 'invested';
   const typeOptions: OperationType[] = invested
     ? INVESTED_OPERATION_TYPES
@@ -72,10 +70,6 @@ export function RulesPanel({ asset, rules, onChanged }: RulesPanelProps) {
         method: 'POST',
         body: JSON.stringify(body),
       });
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status !== 201) {
         setError(apiErrorMessage(data, 'Не удалось сохранить правило'));
         return;
@@ -97,10 +91,6 @@ export function RulesPanel({ asset, rules, onChanged }: RulesPanelProps) {
         method: 'PATCH',
         body: JSON.stringify({ isActive: !rule.isActive }),
       });
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status !== 200) {
         setError(apiErrorMessage(data, 'Не удалось изменить правило'));
         return;
@@ -116,10 +106,6 @@ export function RulesPanel({ asset, rules, onChanged }: RulesPanelProps) {
     setError(null);
     try {
       const { status, data } = await apiFetch(`/api/rules/${rule.id}`, { method: 'DELETE' });
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status !== 204) {
         setError(apiErrorMessage(data, 'Не удалось удалить правило'));
         return;

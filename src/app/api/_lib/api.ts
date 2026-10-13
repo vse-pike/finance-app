@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { ZodType } from 'zod';
 import { SESSION_COOKIE_NAME, verifySessionToken, type Session } from './auth';
-import { HttpError, UnauthorizedError } from './errors';
+import { HttpError, UnauthorizedError } from '@/domain/errors';
 
 export function noContent(): NextResponse {
   return new NextResponse(null, { status: 204 });

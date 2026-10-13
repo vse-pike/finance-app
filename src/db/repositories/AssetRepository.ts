@@ -2,10 +2,11 @@ import { asc, eq } from 'drizzle-orm';
 import { getDb } from '@/db/client';
 import { asset } from '@/db/schema';
 import type {
+  AssetCreateProps,
   AssetProps,
   AssetRepository as IAssetRepository,
 } from '@/domain/types';
-import { NotFoundError } from '@/lib/errors';
+import { NotFoundError } from '@/domain/errors';
 
 type AssetRow = typeof asset.$inferSelect;
 
@@ -40,9 +41,7 @@ export class AssetRepository implements IAssetRepository {
       .limit(1);
     return row ? toProps(row) : null;
   }
-  async create(
-    props: Omit<AssetProps, 'id' | 'closedOn' | 'isActive'>,
-  ): Promise<AssetProps> {
+  async create(props: AssetCreateProps): Promise<AssetProps> {
     const [row] = await getDb()
       .insert(asset)
       .values({

@@ -1,4 +1,4 @@
-import { todayIso, nextOccurrenceAfter } from '@/lib/dates';
+import { todayIso, nextOccurrenceAfter } from '@/domain/dates';
 import { getRepositories } from '@/db/repositories';
 import type { RecurringRuleProps } from '@/domain/types';
 

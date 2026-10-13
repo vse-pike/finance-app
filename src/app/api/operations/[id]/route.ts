@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server';
 import { getRepositories } from '@/db/repositories';
-import { handleRoute, noContent, requireSession } from '@/lib/api';
-import { NotFoundError } from '@/lib/errors';
-import { uuidString } from '@/lib/validation';
+import { handleRoute, noContent, requireSession } from '@/app/api/_lib/api';
+import { NotFoundError } from '@/domain/errors';
+import { uuidString } from '@/app/api/_lib/validation';
 
 export const runtime = 'nodejs';
 

@@ -12,7 +12,6 @@ export const KIND_LABELS: Record<AssetKind, string> = {
   deposit: 'Депозит',
   commodity: 'Коммодити',
   securities: 'Бумаги',
-  other: 'Другое',
 };
 
 export const KIND_OPTIONS = Object.entries(KIND_LABELS) as Array<[AssetKind, string]>;

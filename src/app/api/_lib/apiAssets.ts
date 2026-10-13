@@ -1,5 +1,5 @@
 import { getRepositories } from '@/db/repositories';
-import { NotFoundError } from './errors';
+import { NotFoundError } from '@/domain/errors';
 import { uuidString } from './validation';
 import type { AssetProps } from '@/domain/types';
 

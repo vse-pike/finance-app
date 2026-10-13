@@ -6,8 +6,7 @@ export type AssetKind =
   | 'cash'
   | 'deposit'
   | 'commodity'
-  | 'securities'
-  | 'other';
+  | 'securities';
 
 export type ValuationMethod = 'market' | 'invested' | 'manual';
 
@@ -58,10 +57,20 @@ export interface RevaluationProps {
   note: string | null;
 }
 
+export interface AssetCreateProps {
+  name: string;
+  kind: AssetKind;
+  unit: string;
+  quoteCurrency: string;
+  valuation: ValuationMethod;
+  openedOn?: string;
+  note: string | null;
+}
+
 export interface AssetRepository {
   list(): Promise<AssetProps[]>;
   getById(id: string): Promise<AssetProps | null>;
-  create(props: Omit<AssetProps, 'id' | 'closedOn' | 'isActive'>): Promise<AssetProps>;
+  create(props: AssetCreateProps): Promise<AssetProps>;
   update(id: string, patch: Partial<Pick<AssetProps, 'name' | 'note' | 'isActive' | 'closedOn'>>): Promise<AssetProps>;
   delete(id: string): Promise<void>;
 }

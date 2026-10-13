@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { apiFetch, apiErrorMessage, type AssetApi } from '@/app/_lib/api';
 import { formatDecimal } from '@/app/_lib/format';
 import { KIND_LABELS, VALUATION_LABELS } from '@/app/_lib/labels';
@@ -26,10 +26,6 @@ export default function DashboardPage() {
       try {
         const { status, data } = await apiFetch<AssetApi[]>('/api/assets');
         if (cancelled) return;
-        if (status === 401) {
-          router.replace('/login');
-          return;
-        }
         if (status !== 200 || !Array.isArray(data)) {
           setError(apiErrorMessage(data, 'Не удалось загрузить активы'));
           setAssets([]);
@@ -47,15 +43,12 @@ export default function DashboardPage() {
       cancelled = true;
     };
   }, [router]);
-  const sorted = useMemo(() => {
-    const list = [...(assets ?? [])];
-    list.sort((a, b) => {
-      if (a.isActive !== b.isActive) return a.isActive ? -1 : 1;
-      if (a.openedOn !== b.openedOn) return a.openedOn < b.openedOn ? 1 : -1;
-      return a.name.localeCompare(b.name, 'ru');
-    });
-    return list;
-  }, [assets]);
+  const sorted = [...(assets ?? [])];
+  sorted.sort((a, b) => {
+    if (a.isActive !== b.isActive) return a.isActive ? -1 : 1;
+    if (a.openedOn !== b.openedOn) return a.openedOn < b.openedOn ? 1 : -1;
+    return a.name.localeCompare(b.name, 'ru');
+  });
   const activeCount = (assets ?? []).filter((a) => a.isActive).length;
   async function handleLogout() {
     try {

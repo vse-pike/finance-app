@@ -12,10 +12,7 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-    # Наружу порты не публикуем: БД доступна только внутри docker-сети.
-    # Для локальной разработки раскомментируй:
-    # ports:
-    #   - '127.0.0.1:5432:5432'
+    command: ['postgres', '-c', 'timezone=Asia/Almaty']
 
   app:
     build: .
@@ -24,14 +21,12 @@ services:
       AUTH_USERNAME: ${AUTH_USERNAME}
       AUTH_PASSWORD: ${AUTH_PASSWORD}
       SESSION_SECRET: ${SESSION_SECRET}
+      TZ: ${TZ:-Asia/Almaty}
       # За Cloudflare (HTTPS) должен быть true; для локального http — false в .env
       COOKIE_SECURE: ${COOKIE_SECURE:-true}
     depends_on:
       postgres:
         condition: service_healthy
-    # Прямой доступ полезен локально; в проде ходим через cloudflared.
-    ports:
-      - '127.0.0.1:3000:3000'
 
   cloudflared:
     image: cloudflare/cloudflared:latest

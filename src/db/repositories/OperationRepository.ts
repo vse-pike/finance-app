@@ -6,7 +6,7 @@ import type {
   OperationProps,
   OperationRepository as IOperationRepository,
 } from '@/domain/types';
-import { NotFoundError } from '@/lib/errors';
+import { NotFoundError } from '@/domain/errors';
 
 type OperationRow = typeof operation.$inferSelect;
 

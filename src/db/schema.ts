@@ -25,7 +25,7 @@ export const asset = pgTable('asset', {
   unit: text('unit').notNull(),
   quoteCurrency: text('quote_currency').notNull(),
   valuation: text('valuation').$type<ValuationMethod>().notNull().default('market'),
-  openedOn: date('opened_on').notNull(),
+  openedOn: date('opened_on').notNull().defaultNow(),
   closedOn: date('closed_on'),
   isActive: boolean('is_active').notNull().default(true),
   note: text('note'),

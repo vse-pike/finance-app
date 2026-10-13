@@ -1,0 +1,1 @@
+ALTER TABLE "asset" ALTER COLUMN "opened_on" SET DEFAULT now();

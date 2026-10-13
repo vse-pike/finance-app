@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/auth';
+import { SESSION_COOKIE_NAME, verifySessionToken } from '@/app/api/_lib/auth';
 
 const PUBLIC_PATHS = new Set(['/login', '/api/auth/login']);
 

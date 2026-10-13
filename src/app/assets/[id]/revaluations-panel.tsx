@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import type { AssetApi, RevaluationApi } from '@/app/_lib/api';
 import { apiErrorMessage, apiFetch } from '@/app/_lib/api';
@@ -28,7 +27,6 @@ interface RevaluationsPanelProps {
 }
 
 export function RevaluationsPanel({ asset, revaluations, onChanged }: RevaluationsPanelProps) {
-  const router = useRouter();
   const [onDate, setOnDate] = useState(todayIso());
   const [priceNative, setPriceNative] = useState('');
   const [kind, setKind] = useState<RevaluationApi['kind']>('primary');
@@ -59,10 +57,6 @@ export function RevaluationsPanel({ asset, revaluations, onChanged }: Revaluatio
         method: 'POST',
         body: JSON.stringify(body),
       });
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status !== 201) {
         setError(apiErrorMessage(data, 'Не удалось сохранить переоценку'));
         return;

@@ -13,7 +13,6 @@ const ASSET_KINDS = [
   'deposit',
   'commodity',
   'securities',
-  'other',
 ] as const satisfies readonly AssetKind[];
 
 const VALUATION_METHODS = ['market', 'invested', 'manual'] as const satisfies readonly ValuationMethod[];

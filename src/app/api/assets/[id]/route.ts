@@ -1,16 +1,16 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getRepositories } from '@/db/repositories';
-import { handleRoute, noContent, parseJsonBody, requireSession } from '@/lib/api';
-import { requireAsset, type IdRouteContext } from '@/lib/apiAssets';
-import { ConflictError } from '@/lib/errors';
+import { handleRoute, noContent, parseJsonBody, requireSession } from '@/app/api/_lib/api';
+import { requireAsset, type IdRouteContext } from '@/app/api/_lib/apiAssets';
+import { ConflictError } from '@/domain/errors';
 import {
   serializeAsset,
   serializeOperation,
   serializeRevaluation,
   serializeRule,
-} from '@/lib/serializers';
-import { assetPatchSchema } from '@/lib/validation';
+} from '@/app/api/_lib/serializers';
+import { assetPatchSchema } from '@/app/api/_lib/validation';
 
 export const runtime = 'nodejs';
 

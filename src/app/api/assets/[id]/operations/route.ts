@@ -2,10 +2,10 @@ import Decimal from 'decimal.js';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getRepositories } from '@/db/repositories';
-import { handleRoute, parseJsonBody, requireSession } from '@/lib/api';
-import { requireAsset, type IdRouteContext } from '@/lib/apiAssets';
-import { serializeOperation } from '@/lib/serializers';
-import { operationCreateSchema } from '@/lib/validation';
+import { handleRoute, parseJsonBody, requireSession } from '@/app/api/_lib/api';
+import { requireAsset, type IdRouteContext } from '@/app/api/_lib/apiAssets';
+import { serializeOperation } from '@/app/api/_lib/serializers';
+import { operationCreateSchema } from '@/app/api/_lib/validation';
 
 export const runtime = 'nodejs';
 

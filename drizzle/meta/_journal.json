@@ -15,6 +15,13 @@
       "when": 1791784964973,
       "tag": "0001_misty_wild_pack",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791872501788,
+      "tag": "0002_fast_loners",
+      "breakpoints": true
     }
   ]
 }

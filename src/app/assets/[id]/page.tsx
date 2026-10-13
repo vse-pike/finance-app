@@ -34,10 +34,6 @@ export default function AssetPage() {
   const load = useCallback(async () => {
     try {
       const { status, data } = await apiFetch<AssetDetailsApi>(`/api/assets/${id}`);
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status === 404) {
         setLoadError('Актив не найден');
         return;
@@ -66,10 +62,6 @@ export default function AssetPage() {
         method: 'PATCH',
         body: JSON.stringify(patch),
       });
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status !== 200) {
         setActionError(apiErrorMessage(data, 'Не удалось сохранить изменения'));
         return;
@@ -103,10 +95,6 @@ export default function AssetPage() {
     setActionError(null);
     try {
       const { status, data } = await apiFetch(`/api/assets/${id}`, { method: 'DELETE' });
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status === 409) {
         setActionError('Сначала удалите операции этого актива.');
         return;

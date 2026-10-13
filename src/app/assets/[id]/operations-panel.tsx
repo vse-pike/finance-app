@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import type { AssetApi, OperationApi } from '@/app/_lib/api';
 import { apiErrorMessage, apiFetch } from '@/app/_lib/api';
@@ -41,7 +40,6 @@ interface OperationsPanelProps {
 }
 
 export function OperationsPanel({ asset, operations, onChanged }: OperationsPanelProps) {
-  const router = useRouter();
   const isInvested = asset.valuation === 'invested';
   const availableTypes: OperationType[] = isInvested
     ? INVESTED_OPERATION_TYPES
@@ -94,10 +92,6 @@ export function OperationsPanel({ asset, operations, onChanged }: OperationsPane
         method: 'POST',
         body: JSON.stringify(body),
       });
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status !== 201) {
         setError(apiErrorMessage(data, 'Не удалось сохранить операцию'));
         return;
@@ -121,10 +115,6 @@ export function OperationsPanel({ asset, operations, onChanged }: OperationsPane
       const { status, data } = await apiFetch(`/api/operations/${operationId}`, {
         method: 'DELETE',
       });
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status !== 204) {
         setError(apiErrorMessage(data, 'Не удалось удалить операцию'));
         return;

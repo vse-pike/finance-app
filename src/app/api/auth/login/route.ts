@@ -1,20 +1,20 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { handleRoute, parseJsonBody } from '@/lib/api';
+import { handleRoute, parseJsonBody } from '@/app/api/_lib/api';
 import {
   SESSION_COOKIE_NAME,
   createSessionToken,
   sessionCookieOptions,
-} from '@/lib/auth';
-import { HttpError } from '@/lib/errors';
-import { timingSafeEqualStrings } from '@/lib/password';
+} from '@/app/api/_lib/auth';
+import { HttpError } from '@/domain/errors';
+import { timingSafeEqualStrings } from '@/app/api/_lib/password';
 import {
   clientIpOf,
   isLoginBlocked,
   recordLoginFailure,
   resetLoginFailures,
-} from '@/lib/rateLimit';
-import { loginSchema } from '@/lib/validation';
+} from '@/app/api/_lib/rateLimit';
+import { loginSchema } from '@/app/api/_lib/validation';
 export const runtime = 'nodejs';
 
 function expectedCredentials(): { username: string; password: string } {

@@ -6,7 +6,7 @@ import type {
   RecurringRuleProps,
   RecurringRuleRepository as IRecurringRuleRepository,
 } from '@/domain/types';
-import { NotFoundError } from '@/lib/errors';
+import { NotFoundError } from '@/domain/errors';
 
 type RuleRow = typeof recurringRule.$inferSelect;
 

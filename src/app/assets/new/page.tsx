@@ -26,7 +26,7 @@ const VALUATION_OPTIONS = Object.entries(VALUATION_LABELS) as Array<[ValuationMe
 export default function NewAssetPage() {
   const router = useRouter();
   const [name, setName] = useState('');
-  const [kind, setKind] = useState<AssetKind>('other');
+  const [kind, setKind] = useState<AssetKind>('cash');
   const [unit, setUnit] = useState('');
   const [currencyChoice, setCurrencyChoice] = useState<string>('USD');
   const [customCurrency, setCustomCurrency] = useState('');
@@ -66,10 +66,6 @@ export default function NewAssetPage() {
         method: 'POST',
         body: JSON.stringify(body),
       });
-      if (status === 401) {
-        router.replace('/login');
-        return;
-      }
       if (status !== 201) {
         setError(apiErrorMessage(data, 'Не удалось создать актив'));
         return;

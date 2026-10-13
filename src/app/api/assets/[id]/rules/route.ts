@@ -3,11 +3,11 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { materializeAll } from '@/jobs/recurring';
 import { getRepositories } from '@/db/repositories';
-import { handleRoute, parseJsonBody, requireSession } from '@/lib/api';
-import { requireAsset, type IdRouteContext } from '@/lib/apiAssets';
-import { firstOccurrenceOnOrAfter, todayIso } from '@/lib/dates';
-import { serializeRule } from '@/lib/serializers';
-import { ruleCreateSchema } from '@/lib/validation';
+import { handleRoute, parseJsonBody, requireSession } from '@/app/api/_lib/api';
+import { requireAsset, type IdRouteContext } from '@/app/api/_lib/apiAssets';
+import { firstOccurrenceOnOrAfter, todayIso } from '@/domain/dates';
+import { serializeRule } from '@/app/api/_lib/serializers';
+import { ruleCreateSchema } from '@/app/api/_lib/validation';
 
 export const runtime = 'nodejs';
 

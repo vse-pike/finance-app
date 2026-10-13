@@ -1,10 +1,10 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getRepositories } from '@/db/repositories';
-import { handleRoute, noContent, parseJsonBody, requireSession } from '@/lib/api';
-import { NotFoundError } from '@/lib/errors';
-import { serializeRule } from '@/lib/serializers';
-import { rulePatchSchema, uuidString } from '@/lib/validation';
+import { handleRoute, noContent, parseJsonBody, requireSession } from '@/app/api/_lib/api';
+import { NotFoundError } from '@/domain/errors';
+import { serializeRule } from '@/app/api/_lib/serializers';
+import { rulePatchSchema, uuidString } from '@/app/api/_lib/validation';
 
 export const runtime = 'nodejs';
 

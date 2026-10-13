@@ -1,12 +1,11 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getRepositories } from '@/db/repositories';
-import { computeAssetMetrics } from '@/lib/assetMetrics';
-import { handleRoute, parseJsonBody, requireSession } from '@/lib/api';
-import { todayIso } from '@/lib/dates';
-import { groupBy } from '@/lib/collections';
-import { serializeAsset } from '@/lib/serializers';
-import { assetCreateSchema } from '@/lib/validation';
+import { computeAssetMetrics } from '@/domain/assetMetrics';
+import { handleRoute, parseJsonBody, requireSession } from '@/app/api/_lib/api';
+import { groupBy } from '@/app/api/_lib/collections';
+import { serializeAsset } from '@/app/api/_lib/serializers';
+import { assetCreateSchema } from '@/app/api/_lib/validation';
 
 export const runtime = 'nodejs';
 
@@ -46,7 +45,7 @@ export async function POST(request: NextRequest): Promise<Response> {
       unit: body.unit,
       quoteCurrency: body.quoteCurrency,
       valuation: body.valuation,
-      openedOn: body.openedOn ?? todayIso(),
+      openedOn: body.openedOn,
       note: body.note ?? null,
     });
     return NextResponse.json(
