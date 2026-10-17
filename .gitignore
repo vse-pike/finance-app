@@ -1,8 +1,11 @@
-node_modules/
-.next/
-out/
-*.tsbuildinfo
-.env
-.env.*
 !.env.example
 .DS_Store
+.env
+.env.*
+.next/
+*.out
+*.test
+*.tsbuildinfo
+/finance
+node_modules/
+out/
