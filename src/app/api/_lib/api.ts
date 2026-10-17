@@ -31,30 +31,6 @@ export async function parseJsonBody<T>(
   return parsed.data;
 }
 
-function cookieFromHeader(header: string | null, name: string): string | null {
-  if (!header) return null;
-  for (const part of header.split(';')) {
-    const separator = part.indexOf('=');
-    if (separator === -1) continue;
-    if (part.slice(0, separator).trim() !== name) continue;
-    const value = part.slice(separator + 1).trim();
-    return value.startsWith('"') && value.endsWith('"') && value.length >= 2
-      ? value.slice(1, -1)
-      : value;
-  }
-  return null;
-}
-
-export async function requireSession(request: Request): Promise<Session> {
-  const token = cookieFromHeader(
-    request.headers.get('cookie'),
-    SESSION_COOKIE_NAME,
-  );
-  const session = await verifySessionToken(token);
-  if (!session) throw new UnauthorizedError();
-  return session;
-}
-
 export async function handleRoute(
   handler: () => Promise<Response>,
 ): Promise<Response> {

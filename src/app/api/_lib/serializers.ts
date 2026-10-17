@@ -25,7 +25,6 @@ export interface OperationJson {
   type: string;
   qtyDelta: string;
   valueNative: string | null;
-  transferId: string | null;
   note: string | null;
 }
 
@@ -63,7 +62,6 @@ export function serializeOperation(operation: OperationProps): OperationJson {
     qtyDelta: operation.qtyDelta.toFixed(),
     valueNative:
       operation.valueNative === null ? null : operation.valueNative.toFixed(),
-    transferId: operation.transferId,
     note: operation.note,
   };
 }

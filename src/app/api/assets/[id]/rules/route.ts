@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { materializeAll } from '@/jobs/recurring';
 import { getRepositories } from '@/db/repositories';
-import { handleRoute, parseJsonBody, requireSession } from '@/app/api/_lib/api';
+import { handleRoute, parseJsonBody } from '@/app/api/_lib/api';
 import { requireAsset, type IdRouteContext } from '@/app/api/_lib/apiAssets';
 import { firstOccurrenceOnOrAfter, todayIso } from '@/domain/dates';
 import { serializeRule } from '@/app/api/_lib/serializers';
@@ -16,7 +16,6 @@ export async function GET(
   context: IdRouteContext,
 ): Promise<Response> {
   return handleRoute(async () => {
-    await requireSession(request);
     const { id } = await context.params;
     await requireAsset(id);
     const rules = await getRepositories().rules.listByAsset(id);
@@ -29,7 +28,6 @@ export async function POST(
   context: IdRouteContext,
 ): Promise<Response> {
   return handleRoute(async () => {
-    await requireSession(request);
     const { id } = await context.params;
     await requireAsset(id);
     const body = await parseJsonBody(request, ruleCreateSchema);

@@ -19,16 +19,24 @@ export function todayIso(): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
+function dayInMonth(year: number, month: number, day: number): number {
+  const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  return Math.min(day, lastDay);
+}
+
 export function nextOccurrenceAfter(onDate: string, dayOfMonth: number): string {
   const year = Number(onDate.slice(0, 4));
   const month = Number(onDate.slice(5, 7));
   const nextMonth = month === 12 ? 1 : month + 1;
   const nextYear = month === 12 ? year + 1 : year;
-  return `${nextYear}-${pad(nextMonth)}-${pad(dayOfMonth)}`;
+  return `${nextYear}-${pad(nextMonth)}-${pad(dayInMonth(nextYear, nextMonth, dayOfMonth))}`;
 }
 
 export function firstOccurrenceOnOrAfter(startDate: string, dayOfMonth: number): string {
-  const day = Number(startDate.slice(8, 10));
-  if (dayOfMonth >= day) return `${startDate.slice(0, 7)}-${pad(dayOfMonth)}`;
+  const year = Number(startDate.slice(0, 4));
+  const month = Number(startDate.slice(5, 7));
+  if (dayOfMonth >= Number(startDate.slice(8, 10))) {
+    return `${startDate.slice(0, 7)}-${pad(dayInMonth(year, month, dayOfMonth))}`;
+  }
   return nextOccurrenceAfter(`${startDate.slice(0, 7)}-01`, dayOfMonth);
 }

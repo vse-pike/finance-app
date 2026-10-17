@@ -11,7 +11,7 @@ function effectivePrimaryPrice(
   const day = dateKeyOf(t);
   let best: RevaluationProps | null = null;
   for (const r of revaluations) {
-    if (r.kind !== 'primary') continue;
+    if (r.kind !== 'capital') continue;
     if (r.onDate > day) continue;
     if (best === null || r.onDate >= best.onDate) best = r;
   }

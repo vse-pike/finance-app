@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { getRepositories } from '@/db/repositories';
-import { handleRoute, noContent, requireSession } from '@/app/api/_lib/api';
+import { handleRoute, noContent } from '@/app/api/_lib/api';
 import { NotFoundError } from '@/domain/errors';
 import { uuidString } from '@/app/api/_lib/validation';
 
@@ -11,7 +11,6 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> },
 ): Promise<Response> {
   return handleRoute(async () => {
-    await requireSession(request);
     const { id } = await context.params;
     if (!uuidString.safeParse(id).success) {
       throw new NotFoundError('Операция не найдена');

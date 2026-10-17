@@ -20,16 +20,11 @@ const VALUATION_METHODS = ['market', 'invested', 'manual'] as const satisfies re
 const OPERATION_TYPES = [
   'buy',
   'sell',
-  'transfer_in',
-  'transfer_out',
-  'income',
-  'spend',
-  'fee',
   'down_payment',
   'principal_payment',
 ] as const satisfies readonly OperationType[];
 
-const REVALUATION_KINDS = ['primary', 'reference'] as const satisfies readonly RevaluationKind[];
+const REVALUATION_KINDS = ['capital', 'market'] as const satisfies readonly RevaluationKind[];
 
 export const moneyString = z
   .string()
@@ -82,14 +77,14 @@ export const operationCreateSchema = z.object({
 export const revaluationCreateSchema = z.object({
   onDate: dateString,
   priceNative: moneyString,
-  kind: z.enum(REVALUATION_KINDS).default('primary'),
+  kind: z.enum(REVALUATION_KINDS).default('capital'),
   source: z.string().trim().max(64).nullish(),
   note: noteString.nullish(),
 });
 
 export const ruleCreateSchema = z.object({
   type: z.enum(OPERATION_TYPES),
-  dayOfMonth: z.number().int().min(1, 'День месяца: от 1 до 28').max(28, 'День месяца: от 1 до 28'),
+  dayOfMonth: z.number().int().min(1, 'День месяца: от 1 до 31').max(31, 'День месяца: от 1 до 31'),
   qtyDelta: moneyString.default('0'),
   valueNative: moneyString.optional(),
   startDate: dateString.optional(),

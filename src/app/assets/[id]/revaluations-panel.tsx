@@ -29,7 +29,7 @@ interface RevaluationsPanelProps {
 export function RevaluationsPanel({ asset, revaluations, onChanged }: RevaluationsPanelProps) {
   const [onDate, setOnDate] = useState(todayIso());
   const [priceNative, setPriceNative] = useState('');
-  const [kind, setKind] = useState<RevaluationApi['kind']>('primary');
+  const [kind, setKind] = useState<RevaluationApi['kind']>('capital');
   const [source, setSource] = useState('');
   const [note, setNote] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -173,7 +173,7 @@ export function RevaluationsPanel({ asset, revaluations, onChanged }: Revaluatio
                       <span className="text-neutral-400">{asset.quoteCurrency}</span>
                     </td>
                     <td className={tdClass}>
-                      {revaluation.kind === 'primary' ? (
+                      {revaluation.kind === 'capital' ? (
                         <Badge>основная</Badge>
                       ) : (
                         <Badge tone="amber">справочная</Badge>

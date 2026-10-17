@@ -28,15 +28,15 @@ export function computeAssetMetrics(
     invested = log.investedAt(now);
     lastValueNative = invested;
   } else {
-    let primary: RevaluationProps | null = null;
+    let latest: RevaluationProps | null = null;
     for (const revaluation of revaluations) {
-      if (revaluation.kind !== 'primary') continue;
+      if (revaluation.kind !== 'capital') continue;
       if (revaluation.onDate > today) continue;
-      if (primary === null || revaluation.onDate > primary.onDate) {
-        primary = revaluation;
+      if (latest === null || revaluation.onDate > latest.onDate) {
+        latest = revaluation;
       }
     }
-    lastValueNative = primary === null ? null : primary.priceNative.mul(qty);
+    lastValueNative = latest === null ? null : latest.priceNative.mul(qty);
   }
   return {
     qty: qty.toFixed(),

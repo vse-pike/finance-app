@@ -14,7 +14,6 @@ function op(over: Partial<OperationProps> & { ts: Date }): OperationProps {
     type: 'buy' as OperationType,
     qtyDelta: new Decimal(0),
     valueNative: null,
-    transferId: null,
     note: null,
     ...over,
   };
@@ -66,7 +65,7 @@ describe('OperationLog', () => {
       op({ ts: A, type: 'buy', qtyDelta: new Decimal('1'), valueNative: new Decimal('999') }),
       op({ ts: B, type: 'principal_payment', qtyDelta: new Decimal('0'), valueNative: null }),
       op({ ts: B, type: 'principal_payment', qtyDelta: new Decimal('0'), valueNative: new Decimal('1500.5') }),
-      op({ ts: C, type: 'fee', qtyDelta: new Decimal('0'), valueNative: new Decimal('100') }),
+      op({ ts: C, type: 'buy', qtyDelta: new Decimal('0'), valueNative: new Decimal('100') }),
     ]);
     expect(log.investedAt(A).toNumber()).toBe(20000);
     expect(log.investedAt(B).toNumber()).toBe(21500.5);

@@ -40,8 +40,7 @@ export const operation = pgTable(
     type: text('type').$type<OperationType>().notNull(),
     qtyDelta: numeric('qty_delta', { precision: 38, scale: 12 }).notNull(),
     valueNative: numeric('value_native', { precision: 38, scale: 12 }),
-    transferId: uuid('transfer_id'),
-    note: text('note'),
+      note: text('note'),
   },
   (t) => [index('operation_asset_ts_idx').on(t.assetId, t.ts)],
 );
@@ -53,7 +52,7 @@ export const revaluation = pgTable(
     assetId: uuid('asset_id').notNull().references(() => asset.id),
     onDate: date('on_date').notNull(),
     priceNative: numeric('price_native', { precision: 38, scale: 12 }).notNull(),
-    kind: text('kind').$type<RevaluationKind>().notNull().default('primary'),
+    kind: text('kind').$type<RevaluationKind>().notNull().default('capital'),
     source: text('source'),
     note: text('note'),
   },

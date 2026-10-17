@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getRepositories } from '@/db/repositories';
-import { handleRoute, noContent, parseJsonBody, requireSession } from '@/app/api/_lib/api';
+import { handleRoute, noContent, parseJsonBody } from '@/app/api/_lib/api';
 import { requireAsset, type IdRouteContext } from '@/app/api/_lib/apiAssets';
 import { ConflictError } from '@/domain/errors';
 import {
@@ -19,7 +19,6 @@ export async function GET(
   context: IdRouteContext,
 ): Promise<Response> {
   return handleRoute(async () => {
-    await requireSession(request);
     const { id } = await context.params;
     const asset = await requireAsset(id);
     const { operations, revaluations, rules } = getRepositories();
@@ -42,7 +41,6 @@ export async function PATCH(
   context: IdRouteContext,
 ): Promise<Response> {
   return handleRoute(async () => {
-    await requireSession(request);
     const { id } = await context.params;
     await requireAsset(id);
     const body = await parseJsonBody(request, assetPatchSchema);
@@ -61,7 +59,6 @@ export async function DELETE(
   context: IdRouteContext,
 ): Promise<Response> {
   return handleRoute(async () => {
-    await requireSession(request);
     const { id } = await context.params;
     await requireAsset(id);
     const { operations, assets } = getRepositories();

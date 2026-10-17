@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getRepositories } from '@/db/repositories';
 import { computeAssetMetrics } from '@/domain/assetMetrics';
-import { handleRoute, parseJsonBody, requireSession } from '@/app/api/_lib/api';
+import { handleRoute, parseJsonBody } from '@/app/api/_lib/api';
 import { groupBy } from '@/app/api/_lib/collections';
 import { serializeAsset } from '@/app/api/_lib/serializers';
 import { assetCreateSchema } from '@/app/api/_lib/validation';
@@ -11,7 +11,6 @@ export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest): Promise<Response> {
   return handleRoute(async () => {
-    await requireSession(request);
     const { assets, operations, revaluations } = getRepositories();
     const [assetList, allOperations, allRevaluations] = await Promise.all([
       assets.list(),
@@ -37,7 +36,6 @@ export async function GET(request: NextRequest): Promise<Response> {
 
 export async function POST(request: NextRequest): Promise<Response> {
   return handleRoute(async () => {
-    await requireSession(request);
     const body = await parseJsonBody(request, assetCreateSchema);
     const created = await getRepositories().assets.create({
       name: body.name,

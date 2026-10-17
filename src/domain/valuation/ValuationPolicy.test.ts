@@ -30,7 +30,6 @@ const op = (over: Partial<OperationProps> & { ts: Date }): OperationProps => ({
   type: 'buy',
   qtyDelta: new Decimal(0),
   valueNative: null,
-  transferId: null,
   note: null,
   ...over,
 });
@@ -39,7 +38,7 @@ const rev = (over: Partial<RevaluationProps> & { onDate: string }): RevaluationP
   id: 'rev-' + over.onDate,
   assetId: 'asset-1',
   priceNative: new Decimal(1),
-  kind: 'primary',
+  kind: 'capital',
   source: null,
   note: null,
   ...over,
@@ -54,7 +53,7 @@ describe('InvestedValuation', () => {
     op({ ts: new Date('2024-01-10T00:00:00Z'), type: 'down_payment', valueNative: new Decimal('20000') }),
     op({ ts: new Date('2024-02-10T00:00:00Z'), type: 'principal_payment', valueNative: new Decimal('500') }),
     op({ ts: new Date('2024-03-10T00:00:00Z'), type: 'principal_payment', valueNative: new Decimal('750.25') }),
-    op({ ts: new Date('2024-04-10T00:00:00Z'), type: 'fee', valueNative: new Decimal('100') }),
+    op({ ts: new Date('2024-04-10T00:00:00Z'), type: 'buy', valueNative: new Decimal('100') }),
   ]);
   const policy = new InvestedValuation();
   it('вложения растут нарастающим итогом', () => {
@@ -104,14 +103,14 @@ describe('MarketValuation', () => {
   it('без переоценок — null', () => {
     expect(new MarketValuation([]).valueAt(asset, T2)).toBeNull();
   });
-  it("kind='reference' не участвует в оценке", () => {
+  it("kind='market' не участвует в оценке", () => {
     const onlyReference = new MarketValuation([
-      rev({ onDate: '2024-01-15', priceNative: new Decimal('100'), kind: 'reference' }),
+      rev({ onDate: '2024-01-15', priceNative: new Decimal('100'), kind: 'market' }),
     ]);
     expect(onlyReference.valueAt(asset, T2)).toBeNull();
     const mixed = new MarketValuation([
-      rev({ onDate: '2024-01-15', priceNative: new Decimal('100'), kind: 'primary' }),
-      rev({ onDate: '2024-03-01', priceNative: new Decimal('150'), kind: 'reference' }),
+      rev({ onDate: '2024-01-15', priceNative: new Decimal('100'), kind: 'capital' }),
+      rev({ onDate: '2024-03-01', priceNative: new Decimal('150'), kind: 'market' }),
     ]);
     expect(mixed.valueAt(asset, T2)!.toString()).toBe('300');
   });
@@ -129,20 +128,20 @@ describe('ManualValuation', () => {
   const asset = new Asset(assetProps({ valuation: 'manual' }), [
     op({ ts: new Date('2024-01-01T00:00:00Z'), qtyDelta: new Decimal('1') }),
   ]);
-  it('последняя primary-переоценка ≤ t × количество', () => {
+  it('последняя capital-переоценка ≤ t × количество', () => {
     const policy = new ManualValuation([
       rev({ onDate: '2024-01-15', priceNative: new Decimal('90000') }),
       rev({ onDate: '2024-05-01', priceNative: new Decimal('95000') }),
-      rev({ onDate: '2024-05-02', priceNative: new Decimal('88888'), kind: 'reference' }),
+      rev({ onDate: '2024-05-02', priceNative: new Decimal('88888'), kind: 'market' }),
     ]);
     expect(policy.valueAt(asset, T0)).toBeNull();
     expect(policy.valueAt(asset, T1)!.toString()).toBe('90000');
     expect(policy.valueAt(asset, new Date('2024-05-01T12:00:00Z'))!.toString()).toBe('95000');
   });
-  it('без переоценок — null, reference не считается', () => {
+  it('без переоценок — null, market не считается', () => {
     expect(new ManualValuation([]).valueAt(asset, T2)).toBeNull();
     expect(
-      new ManualValuation([rev({ onDate: '2024-01-01', kind: 'reference', priceNative: new Decimal('5') })])
+      new ManualValuation([rev({ onDate: '2024-01-01', kind: 'market', priceNative: new Decimal('5') })])
         .valueAt(asset, T2),
     ).toBeNull();
   });

@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1791745859459,
-      "tag": "0000_good_the_liberteens",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1791784964973,
-      "tag": "0001_misty_wild_pack",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1791872501788,
-      "tag": "0002_fast_loners",
+      "when": 1792216821915,
+      "tag": "0000_charming_daimon_hellstrom",
       "breakpoints": true
     }
   ]

@@ -13,15 +13,10 @@ export type ValuationMethod = 'market' | 'invested' | 'manual';
 export type OperationType =
   | 'buy'
   | 'sell'
-  | 'transfer_in'
-  | 'transfer_out'
-  | 'income'
-  | 'spend'
-  | 'fee'
   | 'down_payment'
   | 'principal_payment';
 
-export type RevaluationKind = 'primary' | 'reference';
+export type RevaluationKind = 'capital' | 'market';
 
 export interface AssetProps {
   id: string;
@@ -43,7 +38,6 @@ export interface OperationProps {
   type: OperationType;
   qtyDelta: Decimal;
   valueNative: Decimal | null;
-  transferId: string | null;
   note: string | null;
 }
 
@@ -77,9 +71,7 @@ export interface AssetRepository {
 
 export interface OperationRepository {
   listByAsset(assetId: string): Promise<OperationProps[]>;
-  add(
-    props: Omit<OperationProps, 'id' | 'transferId'> & { transferId?: string | null },
-  ): Promise<OperationProps>;
+  add(props: Omit<OperationProps, 'id'>): Promise<OperationProps>;
   delete(id: string): Promise<void>;
 }
 

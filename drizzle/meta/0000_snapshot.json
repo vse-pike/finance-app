@@ -1,5 +1,5 @@
 {
-  "id": "93b7616e-0a06-45af-babe-44e472b4568a",
+  "id": "824d08bd-6392-4ea2-9469-3a2e52885bcd",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -50,7 +50,8 @@
           "name": "opened_on",
           "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "now()"
         },
         "closed_on": {
           "name": "closed_on",
@@ -118,12 +119,6 @@
         "value_native": {
           "name": "value_native",
           "type": "numeric(38, 12)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "transfer_id": {
-          "name": "transfer_id",
-          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -230,6 +225,105 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.recurring_rule": {
+      "name": "recurring_rule",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "asset_id": {
+          "name": "asset_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "day_of_month": {
+          "name": "day_of_month",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "qty_delta": {
+          "name": "qty_delta",
+          "type": "numeric(38, 12)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value_native": {
+          "name": "value_native",
+          "type": "numeric(38, 12)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "next_run_on": {
+          "name": "next_run_on",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "recurring_rule_asset_idx": {
+          "name": "recurring_rule_asset_idx",
+          "columns": [
+            {
+              "expression": "asset_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "recurring_rule_asset_id_asset_id_fk": {
+          "name": "recurring_rule_asset_id_asset_id_fk",
+          "tableFrom": "recurring_rule",
+          "tableTo": "asset",
+          "columnsFrom": [
+            "asset_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.revaluation": {
       "name": "revaluation",
       "schema": "",
@@ -264,7 +358,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'primary'"
+          "default": "'capital'"
         },
         "source": {
           "name": "source",

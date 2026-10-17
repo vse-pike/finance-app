@@ -50,7 +50,7 @@ function referencePoints(
   nowMs: number,
 ): SeriesPoint[] {
   const refs = revaluations
-    .filter((r) => r.kind === 'reference')
+    .filter((r) => r.kind === 'market')
     .sort((a, b) => (a.onDate < b.onDate ? -1 : 1));
   if (refs.length === 0) return [];
   const sortedOps = [...operations].sort((a, b) => Date.parse(a.ts) - Date.parse(b.ts));

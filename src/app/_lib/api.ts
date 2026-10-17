@@ -28,7 +28,6 @@ export interface OperationApi {
   type: OperationType;
   qtyDelta: string;
   valueNative: string | null;
-  transferId: string | null;
   note: string | null;
 }
 

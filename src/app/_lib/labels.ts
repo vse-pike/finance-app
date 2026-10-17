@@ -31,11 +31,6 @@ export const VALUATION_HINTS: Record<ValuationMethod, string> = {
 export const OPERATION_LABELS: Record<OperationType, string> = {
   buy: 'Покупка',
   sell: 'Продажа',
-  income: 'Доход',
-  spend: 'Трата',
-  fee: 'Комиссия',
-  transfer_in: 'Перевод в',
-  transfer_out: 'Перевод из',
   down_payment: 'Первоначальный взнос',
   principal_payment: 'Платёж по телу',
 };
@@ -46,24 +41,16 @@ export const INVESTED_OPERATION_TYPES: OperationType[] = [
   'sell',
 ];
 
-export const STANDARD_OPERATION_TYPES: OperationType[] = [
-  'buy',
-  'sell',
-  'income',
-  'spend',
-  'fee',
-  'transfer_in',
-  'transfer_out',
-];
+export const STANDARD_OPERATION_TYPES: OperationType[] = ['buy', 'sell'];
 
 export const REVALUATION_KIND_LABELS: Record<RevaluationKind, string> = {
-  primary: 'Основная',
-  reference: 'Справочная',
+  capital: 'В капитал',
+  market: 'Рыночная',
 };
 
 export const REVALUATION_KIND_HINTS: Record<RevaluationKind, string> = {
-  primary: 'Входит в капитал',
-  reference: 'Не входит в капитал',
+  capital: 'Учитывается в итогах',
+  market: 'Не входит в капитал — видна только на графике',
 };
 
 export const CURRENCY_OPTIONS = ['USD', 'KZT', 'RUB', 'EUR'] as const;

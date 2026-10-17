@@ -18,7 +18,6 @@ function toProps(row: OperationRow): OperationProps {
     type: row.type,
     qtyDelta: new Decimal(row.qtyDelta),
     valueNative: row.valueNative === null ? null : new Decimal(row.valueNative),
-    transferId: row.transferId ?? null,
     note: row.note ?? null,
   };
 }
@@ -40,9 +39,7 @@ export class OperationRepository implements IOperationRepository {
     return rows.map(toProps);
   }
   async add(
-    props: Omit<OperationProps, 'id' | 'transferId'> & {
-      transferId?: string | null;
-    },
+    props: Omit<OperationProps, 'id'>,
   ): Promise<OperationProps> {
     const [row] = await getDb()
       .insert(operation)
@@ -52,7 +49,6 @@ export class OperationRepository implements IOperationRepository {
         type: props.type,
         qtyDelta: props.qtyDelta.toFixed(),
         valueNative: props.valueNative === null ? null : props.valueNative.toFixed(),
-        transferId: props.transferId ?? null,
         note: props.note,
       })
       .returning();

@@ -23,7 +23,6 @@ const op = (over: Partial<OperationProps> & { ts: Date }): OperationProps => ({
   type: 'buy',
   qtyDelta: new Decimal(0),
   valueNative: null,
-  transferId: null,
   note: null,
   ...over,
 });
